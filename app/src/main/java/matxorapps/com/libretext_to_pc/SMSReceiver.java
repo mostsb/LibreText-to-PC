@@ -22,6 +22,8 @@ public class SMSReceiver extends BroadcastReceiver {
        Log.i("SMS", messages.getMessageBody());
        Toast.makeText(context, "WHAT: " + messages.getMessageBody(), Toast.LENGTH_SHORT).show();
 
+        SMSService.pushSMS(messages.getMessageBody(), SMSService.smsWriter);
+
 
    }
 
