@@ -1,6 +1,7 @@
 package matxorapps.com.libretext_to_pc;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,13 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    Intent SMSServiceIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SMSServiceIntent = new Intent(this, SMSService.class);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -50,6 +53,20 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void beginSMSIntercept(View view){
+        startService(SMSServiceIntent);
+        /*SMSReceiver smsReceiver = new SMSReceiver();
+        IntentFilter smsFilter = new IntentFilter();
+        smsFilter.addAction("android.provider.Telephony.SMS_DELIVER");
+
+        registerReceiver(smsReceiver, smsFilter);*/
+        //Toast.makeText(this, "Service Started",Toast.LENGTH_SHORT).show();
+    }
+
+    public void stopSMSIntercept(View view){
+        stopService(SMSServiceIntent);
+
+    }
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -65,8 +82,7 @@ public class MainActivity extends ActionBarActivity {
             return rootView;
         }
 
-        public void beginSMSIntercept(){
-            
-        }
+
     }
+
 }

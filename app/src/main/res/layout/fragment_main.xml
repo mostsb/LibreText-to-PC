@@ -13,7 +13,8 @@
         android:id="@+id/start_service_button"
         android:layout_marginTop="122dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="beginSMSIntercept" />
 
     <Button
         android:layout_width="wrap_content"
@@ -22,5 +23,6 @@
         android:id="@+id/stop_service_button"
         android:layout_below="@+id/start_service_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="119dp" />
+        android:layout_marginTop="119dp"
+        android:onClick="stopSMSIntercept" />
 </RelativeLayout>
