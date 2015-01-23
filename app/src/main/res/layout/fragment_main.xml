@@ -7,22 +7,60 @@
     tools:context=".MainActivity$PlaceholderFragment">
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Start Service"
         android:id="@+id/start_service_button"
-        android:layout_marginTop="122dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="beginSMSIntercept" />
+        android:onClick="beginSMSIntercept"
+        android:layout_marginBottom="0dp"
+        android:layout_above="@+id/stop_service_button"
+        android:layout_centerHorizontal="true" />
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Stop Service"
         android:id="@+id/stop_service_button"
-        android:layout_below="@+id/start_service_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="119dp"
-        android:onClick="stopSMSIntercept" />
+        android:onClick="stopSMSIntercept"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/start_service_button"
+        android:layout_alignStart="@+id/start_service_button" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host Address"
+        android:id="@+id/host_address_label"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/host_address_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:maxLength="15"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Host Port"
+        android:id="@+id/host_port_label"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/host_port_text"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
+        android:maxLength="5"/>
+
+
 </RelativeLayout>

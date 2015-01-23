@@ -6,17 +6,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
     Intent SMSServiceIntent;
+    public static String hostAddr;
+    public static String hostPort;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +58,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void beginSMSIntercept(View view){
-        startService(SMSServiceIntent);
+        EditText hostAddrText = (EditText) findViewById(R.id.host_address_text);
+        EditText hostPortText = (EditText) findViewById(R.id.host_port_text);
+
+        hostAddr = hostAddrText.getText().toString();
+        hostPort = hostPortText.getText().toString();
+
+        Toast.makeText(this,"hostAddr: "+hostAddr.length(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"hostPort: "+hostPort.length(), Toast.LENGTH_SHORT).show();
+
+        if(hostAddr.length() <= 0 || hostPort.length() <= 0){
+            Toast.makeText(this,"Please enter an address and port.", Toast.LENGTH_SHORT).show();
+            return;
+        }else {
+            startService(SMSServiceIntent);
+        }
         /*SMSReceiver smsReceiver = new SMSReceiver();
         IntentFilter smsFilter = new IntentFilter();
         smsFilter.addAction("android.provider.Telephony.SMS_DELIVER");

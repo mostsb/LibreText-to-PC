@@ -24,6 +24,7 @@ public class SMSService extends Service {
     public static Socket smsSocket;
     public static SMSReceiver smsReceiver = new SMSReceiver();
     public static OutputStreamWriter smsWriter;
+
     @Override
     public void onCreate(){
 
@@ -32,12 +33,14 @@ public class SMSService extends Service {
             public void run() {
                 Looper.prepare();
                 try {
-                    InetAddress remoteAddr = InetAddress.getByName("192.168.1.6");
-                    smsSocket = new Socket(remoteAddr, 7666);
+                    InetAddress remoteAddr = InetAddress.getByName(MainActivity.hostAddr);
+                    smsSocket = new Socket(remoteAddr, Integer.parseInt(MainActivity.hostPort));
                     smsWriter = new OutputStreamWriter(smsSocket.getOutputStream());
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Could not connect to server", Toast.LENGTH_SHORT).show();
+
                 }
                 Looper.loop();
             }
@@ -72,7 +75,7 @@ public class SMSService extends Service {
                 PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
                 PackageManager.DONT_KILL_APP);
         Toast.makeText(this,"Killed Receiver",Toast.LENGTH_SHORT).show();
-        //unregisterReceiver(smsReceiver);
+        unregisterReceiver(smsReceiver);
         try {
             smsSocket.close();
             smsWriter.close();
