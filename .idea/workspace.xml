@@ -18,7 +18,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="47c7656d-bae8-4bfc-988e-6e29c6d2e531" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSReceiver.java" afterPath="$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSReceiver.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSService.java" afterPath="$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
@@ -46,7 +45,7 @@
       <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="663" max-vertical-offset="1666">
+            <state vertical-scroll-proportion="0.0" vertical-offset="714" max-vertical-offset="1666">
               <caret line="72" column="15" selection-start-line="72" selection-start-column="15" selection-end-line="72" selection-end-column="15" />
               <folding />
             </state>
@@ -89,11 +88,11 @@
       <file leaf-file-name="SMSService.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34615386" vertical-offset="975" max-vertical-offset="6222">
-              <caret line="86" column="42" selection-start-line="86" selection-start-column="42" selection-end-line="86" selection-end-column="42" />
+            <state vertical-scroll-proportion="0.4353147" vertical-offset="4715" max-vertical-offset="6324">
+              <caret line="310" column="41" selection-start-line="310" selection-start-column="41" selection-end-line="310" selection-end-column="41" />
               <folding>
-                <element signature="e#6267#6268#0" expanded="true" />
-                <element signature="e#6294#6295#0" expanded="true" />
+                <element signature="e#6242#6243#0" expanded="true" />
+                <element signature="e#6269#6270#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -1021,7 +1020,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32885906" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32967034" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32885906" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1101,8 +1100,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="2040">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
-            <element signature="e#6267#6268#0" expanded="true" />
-            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6242#6243#0" expanded="true" />
+            <element signature="e#6269#6270#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1174,8 +1173,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="2040">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
           <folding>
-            <element signature="e#6267#6268#0" expanded="true" />
-            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6242#6243#0" expanded="true" />
+            <element signature="e#6269#6270#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1247,8 +1246,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="697" max-vertical-offset="1734">
           <caret line="74" column="22" selection-start-line="74" selection-start-column="22" selection-end-line="74" selection-end-column="22" />
           <folding>
-            <element signature="e#6267#6268#0" expanded="true" />
-            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6242#6243#0" expanded="true" />
+            <element signature="e#6269#6270#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1320,8 +1319,8 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="799">
           <caret line="21" column="49" selection-start-line="21" selection-start-column="49" selection-end-line="21" selection-end-column="49" />
           <folding>
-            <element signature="e#6267#6268#0" expanded="true" />
-            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6242#6243#0" expanded="true" />
+            <element signature="e#6269#6270#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1438,11 +1437,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/matxorapps/com/libretext_to_pc/SMSService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34615386" vertical-offset="975" max-vertical-offset="6222">
-          <caret line="86" column="42" selection-start-line="86" selection-start-column="42" selection-end-line="86" selection-end-column="42" />
+        <state vertical-scroll-proportion="0.4353147" vertical-offset="4715" max-vertical-offset="6324">
+          <caret line="310" column="41" selection-start-line="310" selection-start-column="41" selection-end-line="310" selection-end-column="41" />
           <folding>
-            <element signature="e#6267#6268#0" expanded="true" />
-            <element signature="e#6294#6295#0" expanded="true" />
+            <element signature="e#6242#6243#0" expanded="true" />
+            <element signature="e#6269#6270#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -18,6 +18,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.SocketException;
 
 /**
  * Created by Mostsb on 21/01/2015.
@@ -31,11 +32,12 @@ public class SMSService extends Service {
     public static Socket[] openSockets = new Socket[1024];
     public static Socket[] openReaderSockets = new Socket[1024];
     public static String currentSMS = "";
+    public static int isStopped = 0;
 
     @Override
     public void onCreate(){
 
-
+        isStopped = 0;
         //Attempt to create a server socket
         Thread serverThread = new Thread(){
 
@@ -165,12 +167,9 @@ public class SMSService extends Service {
         unregisterReceiver(smsReceiver);
         try {
             serverSocket.close();
+            serverReaderSocket.close();
             //close all open client sockets
-            for(int i = 0; i < openSockets.length; i++){
-                if(!(openSockets[i].isClosed())) {
-                    openSockets[i].close();
-                }
-            }
+            isStopped = 1;
             //smsSocket.close();
             //smsWriter.close();
         }catch (Exception e){
@@ -273,6 +272,9 @@ public class SMSService extends Service {
                     clSocketWriter.write(welcomeMessage);
                     clSocketWriter.flush();
                     while(true){
+                        if(isStopped == 1){
+                            break;
+                        }
                         if(currentSMS != oldSMS){
                             clSocketWriter.write(currentSMS);
                             clSocketWriter.flush();
@@ -305,6 +307,8 @@ public class SMSService extends Service {
                         isNewLine = 0;
                         */
                     }
+                    clSocketWriter.close();
+                    clientSocket.close();
                 }catch (Exception e){
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(),"Could not write to client socket",Toast.LENGTH_SHORT).show();
@@ -337,7 +341,9 @@ public class SMSService extends Service {
                 clSocketWriter.flush();
                 while(true){
 
-
+                        if(isStopped == 1){
+                            break;
+                        }
                         while(isNewLine == 0) {
                             clSocketReader.read(messageBuffer, 0, 1);
                             if(messageBuffer[0] == 0x0a){
@@ -354,9 +360,7 @@ public class SMSService extends Service {
                         if(clMessage.equals("exit")){
                             clSocketWriter.write("Good-Bye!\n");
                             clSocketWriter.flush();
-                            clSocketWriter.close();
-                            clSocketReader.close();
-                            clientSocket.close();
+
                             break;
 
                         }
@@ -364,6 +368,9 @@ public class SMSService extends Service {
                         isNewLine = 0;
 
                 }
+                clSocketWriter.close();
+                clSocketReader.close();
+                clientSocket.close();
             }catch (Exception e){
                 e.printStackTrace();
                 Toast.makeText(getApplicationContext(),"Could not write to client socket",Toast.LENGTH_SHORT).show();
