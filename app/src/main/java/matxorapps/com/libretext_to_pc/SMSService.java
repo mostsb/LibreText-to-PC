@@ -12,27 +12,113 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedWriter;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 
 /**
- * Created by Matto on 21/01/2015.
+ * Created by Mostsb on 21/01/2015.
  */
 public class SMSService extends Service {
     public static Socket smsSocket;
+    public static ServerSocket serverSocket;
+    public static ServerSocket serverReaderSocket;
     public static SMSReceiver smsReceiver = new SMSReceiver();
     public static OutputStreamWriter smsWriter;
+    public static Socket[] openSockets = new Socket[1024];
+    public static Socket[] openReaderSockets = new Socket[1024];
+    public static String currentSMS = "";
 
     @Override
     public void onCreate(){
 
 
+        //Attempt to create a server socket
+        Thread serverThread = new Thread(){
+
+            int socketServerPort = Integer.parseInt(MainActivity.hostPort);
+
+            public void run(){
+                Looper.prepare();
+                try {
+                    serverSocket = new ServerSocket(socketServerPort);
+
+                    int socketCounter = 0;
+                    while(true){
+                        Socket clSocket = serverSocket.accept();
+                        openSockets[socketCounter++] = clSocket;
+                        String connectedMessage = "Connected to client at " + String.valueOf(clSocket.getInetAddress()) + " on port " + String.valueOf(clSocket.getPort());
+
+                        //Toast.makeText(getApplicationContext(),connectedMessage,Toast.LENGTH_SHORT).show();
+
+                        ClCommunication newClient = new ClCommunication(clSocket);
+                        newClient.start();
+
+
+                    }
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Could not create the server socket, or socket closed",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                Looper.loop();
+            }
+
+        };
+        serverThread.start();
+
+        //Attempt to create a server READER socket
+        Thread serverReaderThread = new Thread(){
+
+            int socketServerPort = Integer.parseInt(MainActivity.hostPort)+1;
+
+            public void run(){
+                Looper.prepare();
+                try {
+                    serverReaderSocket = new ServerSocket(socketServerPort);
+
+                    int socketCounter = 0;
+                    while(true){
+                        Socket clSocket = serverReaderSocket.accept();
+                        openReaderSockets[socketCounter++] = clSocket;
+                        String connectedMessage = "Connected to client at " + String.valueOf(clSocket.getInetAddress()) + " on port " + String.valueOf(clSocket.getPort());
+
+                        //Toast.makeText(getApplicationContext(),connectedMessage,Toast.LENGTH_SHORT).show();
+
+                        ClReaderCommunication newClient = new ClReaderCommunication(clSocket);
+                        newClient.start();
+
+
+                    }
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Could not create the server socket, or socket closed",Toast.LENGTH_SHORT).show();
+                }
+
+
+
+                Looper.loop();
+            }
+
+        };
+        serverReaderThread.start();
+/*
+        //Attempt to create a client socket
         Thread initSocket = new Thread(){
             public void run() {
                 Looper.prepare();
                 try {
+
+
                     InetAddress remoteAddr = InetAddress.getByName(MainActivity.hostAddr);
                     smsSocket = new Socket(remoteAddr, Integer.parseInt(MainActivity.hostPort));
                     smsWriter = new OutputStreamWriter(smsSocket.getOutputStream());
@@ -47,6 +133,7 @@ public class SMSService extends Service {
         };
 
         initSocket.start();
+        */
         IntentFilter smsFilter = new IntentFilter();
         smsFilter.addAction("android.provider.Telephony.RECEIVE_SMS");
 
@@ -77,8 +164,15 @@ public class SMSService extends Service {
         Toast.makeText(this,"Killed Receiver",Toast.LENGTH_SHORT).show();
         unregisterReceiver(smsReceiver);
         try {
-            smsSocket.close();
-            smsWriter.close();
+            serverSocket.close();
+            //close all open client sockets
+            for(int i = 0; i < openSockets.length; i++){
+                if(!(openSockets[i].isClosed())) {
+                    openSockets[i].close();
+                }
+            }
+            //smsSocket.close();
+            //smsWriter.close();
         }catch (Exception e){
             Toast.makeText(this, "Could not close socket", Toast.LENGTH_SHORT).show();
         }
@@ -95,18 +189,187 @@ public class SMSService extends Service {
     }
 
 
-    public static void pushSMS(String sms, OutputStreamWriter smsWriter){
-        try {
+    public static void pushSMS(String sms){
+
+        currentSMS = sms;
+        Log.d("sms", currentSMS);
+
+        /*for(int i = 0; i < openSockets.length;i++){
+            try {
+                if(!openSockets[i].isClosed()){
+
+                    OutputStreamWriter clWriter = new OutputStreamWriter(openSockets[i].getOutputStream());
+                    clWriter.write(currentSMS);
+                    clWriter.close();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                }
+
+        }*/
+       // try {
 
 
-            smsWriter.write(sms);
-            smsWriter.flush();
+            //smsWriter.write(sms);
+            //smsWriter.flush();
 
-        }catch(Exception e){
-            //Toast.makeText(, "Could not write to socket", Toast.LENGTH_SHORT).show();
-            Log.d("SOCKET", "Could not write to socket");
+       // }catch(Exception e){
+       //     //Toast.makeText(, "Could not write to socket", Toast.LENGTH_SHORT).show();
+       //     Log.d("SOCKET", "Could not write to socket");
+       // }
+
+
+    }
+
+    public class ClSMSPush extends Thread{
+
+        private Socket clientSocket = null;
+        public ClSMSPush(Socket clSocket){
+            super("ClSMSPush");
+            clientSocket = clSocket;
         }
 
+        public void run(){
+            Looper.prepare();
+            OutputStreamWriter clWriter;
+
+            try {
+                clWriter = new OutputStreamWriter(clientSocket.getOutputStream());
+
+                clWriter.write(currentSMS);
+
+                clWriter.close();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+
+
+            Looper.loop();
+        }
+    }
+    public class ClCommunication extends Thread{
+
+            //Server Communication Thread
+            private Socket clientSocket = null;
+            public ClCommunication(Socket clSocket){
+                super("ClCommunication");
+                clientSocket = clSocket;
+            }
+            public void run(){
+                Looper.prepare();
+
+                //Send a welcome message after connection is established
+                try {
+                    OutputStreamWriter clSocketWriter = new OutputStreamWriter(clientSocket.getOutputStream());
+                    InputStreamReader clSocketReader = new InputStreamReader(clientSocket.getInputStream());
+                    char[] messageBuffer = new char[2];
+                    int isNewLine = 0;
+                    String clMessage = "";
+                    String oldSMS = "";
+                    String welcomeMessage = "Connection Established\n";
+                    clSocketWriter.write(welcomeMessage);
+                    clSocketWriter.flush();
+                    while(true){
+                        if(currentSMS != oldSMS){
+                            clSocketWriter.write(currentSMS);
+                            clSocketWriter.flush();
+                            oldSMS = currentSMS;
+                        }
+
+                        /*while(isNewLine == 0) {
+                            clSocketReader.read(messageBuffer, 0, 1);
+                            if(messageBuffer[0] == 0x0a){
+                                isNewLine = 1;
+                            }else{
+                                clMessage += String.valueOf(messageBuffer[0]);
+                            }
+                        }
+                        /*Log.d("clMessage",clMessage);
+                        Toast.makeText(getApplicationContext(),clMessage,Toast.LENGTH_SHORT).show();
+
+                        clSocketWriter.write("\n");
+                        clSocketWriter.flush();
+                        if(clMessage.equals("exit")){
+                            clSocketWriter.write("Good-Bye!\n");
+                            clSocketWriter.flush();
+                            clSocketWriter.close();
+                            clSocketReader.close();
+                            clientSocket.close();
+                            break;
+
+                        }
+                        clMessage = "";
+                        isNewLine = 0;
+                        */
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),"Could not write to client socket",Toast.LENGTH_SHORT).show();
+                }
+                Looper.loop();
+            }
+
+    }
+    public class ClReaderCommunication extends Thread{
+
+        //Server Communication Thread
+        private Socket clientSocket = null;
+        public ClReaderCommunication(Socket clSocket){
+            super("ClReaderCommunication");
+            clientSocket = clSocket;
+        }
+        public void run(){
+            Looper.prepare();
+
+            //Send a welcome message after connection is established
+            try {
+                OutputStreamWriter clSocketWriter = new OutputStreamWriter(clientSocket.getOutputStream());
+                InputStreamReader clSocketReader = new InputStreamReader(clientSocket.getInputStream());
+                char[] messageBuffer = new char[2];
+                int isNewLine = 0;
+                String clMessage = "";
+
+                String welcomeMessage = "Connection Established\nSMS-sh - >";
+                clSocketWriter.write(welcomeMessage);
+                clSocketWriter.flush();
+                while(true){
+
+
+                        while(isNewLine == 0) {
+                            clSocketReader.read(messageBuffer, 0, 1);
+                            if(messageBuffer[0] == 0x0a){
+                                isNewLine = 1;
+                            }else{
+                                clMessage += String.valueOf(messageBuffer[0]);
+                            }
+                        }
+                        Log.d("clMessage",clMessage);
+                        Toast.makeText(getApplicationContext(),clMessage,Toast.LENGTH_SHORT).show();
+
+                        clSocketWriter.write("\nSMS-sh - >");
+                        clSocketWriter.flush();
+                        if(clMessage.equals("exit")){
+                            clSocketWriter.write("Good-Bye!\n");
+                            clSocketWriter.flush();
+                            clSocketWriter.close();
+                            clSocketReader.close();
+                            clientSocket.close();
+                            break;
+
+                        }
+                        clMessage = "";
+                        isNewLine = 0;
+
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(),"Could not write to client socket",Toast.LENGTH_SHORT).show();
+            }
+            Looper.loop();
+        }
 
     }
 

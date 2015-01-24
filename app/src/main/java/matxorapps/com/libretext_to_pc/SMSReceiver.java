@@ -20,9 +20,10 @@ public class SMSReceiver extends BroadcastReceiver {
        Object[] pdus = (Object[]) pudsBundle.get("pdus");
        SmsMessage messages = SmsMessage.createFromPdu((byte[]) pdus[0]);
        Log.i("SMS", messages.getMessageBody());
-       Toast.makeText(context, "WHAT: " + messages.getMessageBody(), Toast.LENGTH_SHORT).show();
 
-        SMSService.pushSMS(messages.getMessageBody(), SMSService.smsWriter);
+
+        SMSService.pushSMS(messages.getMessageBody());
+        //Toast.makeText(context, SMSService.currentSMS,Toast.LENGTH_SHORT).show();
 
 
    }
