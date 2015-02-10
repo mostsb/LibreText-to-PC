@@ -25,24 +25,24 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/start_service_button"
         android:layout_alignStart="@+id/start_service_button" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Device Address"
+        android:id="@+id/ip_address_label"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="16dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Host Address"
-        android:id="@+id/host_address_label"
+        android:text="0.0.0.0"
+        android:id="@+id/device_address"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/host_address_text"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="60dp"
-        android:gravity="center"
-        android:maxLength="15"/>
 
     <TextView
         android:layout_width="wrap_content"

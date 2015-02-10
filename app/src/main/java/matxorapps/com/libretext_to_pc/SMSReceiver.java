@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 /**
  * Created by Mostsb on 21/01/2015.
- * Using code by Christopher Gwilliams
  */
 public class SMSReceiver extends BroadcastReceiver {
 
@@ -19,11 +18,7 @@ public class SMSReceiver extends BroadcastReceiver {
        Bundle pudsBundle = intent.getExtras();
        Object[] pdus = (Object[]) pudsBundle.get("pdus");
        SmsMessage messages = SmsMessage.createFromPdu((byte[]) pdus[0]);
-       Log.i("SMS", messages.getMessageBody());
-
-
-        SMSService.pushSMS(messages.getMessageBody());
-        //Toast.makeText(context, SMSService.currentSMS,Toast.LENGTH_SHORT).show();
+       SMSService.pushSMS(messages.getMessageBody(),messages.getOriginatingAddress());
 
 
    }
